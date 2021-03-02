@@ -52,8 +52,9 @@ namespace CypherSymetricAES
         {
             using (var aes = Aes.Create())
             {
-                aes.Mode = CipherMode.CBC; 
+                aes.Mode = CipherMode.CBC;
                 // mimo náš rozsah ... musíme si pamatovat, že aes.Mode musíme nastavit z enum CipherMode
+                // https://cs.wikipedia.org/wiki/Provozn%C3%AD_re%C5%BEim_blokov%C3%BDch_%C5%A1ifer
                 aes.Key = key;
                 aes.GenerateIV(); // Pro každou šifrovací sekvenci je jiný. Pro dešifrování ho potřebujeme!
 
