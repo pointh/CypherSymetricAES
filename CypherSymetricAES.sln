@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CypherAsymetricRSA", "Cyphe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecipherWithKeyAndIV", "DecipherWithKeyAndIV\DecipherWithKeyAndIV.csproj", "{5B1D490B-F641-4885-8A9D-1F1E21434729}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Communicators", "Communicators\Communicators.csproj", "{1E4B0D5D-E43C-44D9-974B-BA69DBB21EE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5B1D490B-F641-4885-8A9D-1F1E21434729}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B1D490B-F641-4885-8A9D-1F1E21434729}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B1D490B-F641-4885-8A9D-1F1E21434729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E4B0D5D-E43C-44D9-974B-BA69DBB21EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E4B0D5D-E43C-44D9-974B-BA69DBB21EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E4B0D5D-E43C-44D9-974B-BA69DBB21EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E4B0D5D-E43C-44D9-974B-BA69DBB21EE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

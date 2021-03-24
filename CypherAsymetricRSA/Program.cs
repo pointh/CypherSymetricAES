@@ -7,15 +7,16 @@ namespace CypherAsymetricRSA
         static void Main(string[] args)
         {
             var data = new byte[] { 1, 2, 3 };
-            RSAParameters publicKey = new RSAParameters(), privateKey=new RSAParameters();
-            GenerateKeys(2048, ref publicKey, ref privateKey);
+            RSAParameters publicKey, privateKey;
+
+            GenerateKeys(2048, out publicKey, out privateKey);
 
             var encryptedData = Encrypt(data, publicKey);
             var decryptedData = Decrypt(encryptedData, privateKey);
 
         }
 
-        static void GenerateKeys(int keyLength, ref RSAParameters publicKey, ref RSAParameters privateKey)
+        static void GenerateKeys(int keyLength, out RSAParameters publicKey, out RSAParameters privateKey)
         {
             using (var rsa = RSA.Create())
             {
