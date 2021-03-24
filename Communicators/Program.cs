@@ -22,18 +22,20 @@ namespace Communicators
 
     class Communicator
     {
-        // tyto 2 informace jsou dostupné ostatním komunikátorům
+        // tyto 3 informace jsou dostupné ostatním komunikátorům
+        public string Identifikator;                            // čitelná identifikakce komunikátora
         public RSAParameters publicKey;                         // veřejný klíč, aby nám ostatní mohli posílat RSA zašifrované zprávy
         public List<Zprava> messagesIn = new List<Zprava>();    // message box, do kterého přijímáme zprávy
 
         private List<Zprava> messagesOut = new List<Zprava>();
-        private const int keySize = 2048;
+        private const int keySize = 2048; // velikost klíče pro asymetrické šifrování - velmi bezpečné!
         private byte[] klic;
         private RSAParameters privateKey;
         private Dictionary<Communicator, byte[]> keyChain = new Dictionary<Communicator, byte[]>();
 
-        public Communicator()
+        public Communicator(string name)
         {
+            this.Identifikator = name;
             klic = new byte[256 / 8]; // prázdný
             RandomNumberGenerator.Create().GetBytes(klic);  // generuj symetrický klíč - zaplň pole
             keyChain[this] = klic;
@@ -48,17 +50,20 @@ namespace Communicators
 
         private void ShareKeyWith(Communicator receiver)
         {
+            #region Šifrování přenosu
             byte[] encryptedSymetricKey;
             using (var rsa = RSA.Create())
             {
                 rsa.ImportParameters(receiver.publicKey);  // šifrujeme cizím veřejným klíčem
                 encryptedSymetricKey = rsa.Encrypt(keyChain[this], RSAEncryptionPadding.Pkcs1);
             }
+            #endregion
             receiver.ReceiveKey(this, encryptedSymetricKey);    // ---> odesílání zašifrovaného sym. klíče
         }
 
         private void ReceiveKey(Communicator from, byte[] encryptedSymetricKey)
         {
+            #region Dešifrováná přenosu
             byte[] decryptedSymetricKey;
             using (var rsa = RSA.Create())
             {
@@ -66,6 +71,7 @@ namespace Communicators
                                                     // který je propojený s vlastním veřejným klíčem
                 decryptedSymetricKey = rsa.Decrypt(encryptedSymetricKey, RSAEncryptionPadding.Pkcs1);
             }
+            #endregion
             keyChain[from] = decryptedSymetricKey;  // uložení dešifrovaného sym. klíče
         }
 
@@ -99,7 +105,7 @@ namespace Communicators
             receiver.messagesIn.Add(zprava);
         }
 
-        public void DecodeFrom(Communicator sender = null)
+        public void DecodeFrom(Communicator sender = null) // null = dekóduj od všech
         {
             IEnumerable<Zprava> dosleZpravyFromSender;
 
@@ -134,7 +140,7 @@ namespace Communicators
                         desifrovanaZprava = Encoding.GetEncoding("UTF-16").GetString(desifrovanaZpravaBytes);
                     }
                 }
-                Console.WriteLine(desifrovanaZprava);
+                Console.WriteLine($"Zpráva pro {Identifikator} od {zprava.odesilatel.Identifikator}: {desifrovanaZprava}");
             }
         }
     }
@@ -143,8 +149,8 @@ namespace Communicators
     {
         static void Main(string[] args)
         {
-            Communicator A = new Communicator();
-            Communicator B = new Communicator();
+            Communicator A = new Communicator("Antonín");
+            Communicator B = new Communicator("Běta");
             A.Send("Zase schůze", B);
             A.Send("Nekončící", B);
             B.Send("Sám sobě", B);
