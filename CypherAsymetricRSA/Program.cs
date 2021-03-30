@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace CypherAsymetricRSA
 {
@@ -6,14 +7,21 @@ namespace CypherAsymetricRSA
     {
         static void Main(string[] args)
         {
-            var data = new byte[] { 1, 2, 3 };
-            RSAParameters publicKey, privateKey;
+            byte[] data = new byte[8];
+            RandomNumberGenerator.Create().GetBytes(data);
+            WriteByteArray(data);
 
+            RSAParameters publicKey, privateKey;
             GenerateKeys(2048, out publicKey, out privateKey);
 
             var encryptedData = Encrypt(data, publicKey);
             var decryptedData = Decrypt(encryptedData, privateKey);
+            WriteByteArray(decryptedData);
+        }
 
+        static void WriteByteArray(byte[] arr)
+        {
+            Console.WriteLine(string.Join(", ", arr));
         }
 
         static void GenerateKeys(int keyLength, out RSAParameters publicKey, out RSAParameters privateKey)

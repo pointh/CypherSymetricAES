@@ -105,7 +105,7 @@ namespace Communicators
             receiver.messagesIn.Add(zprava);
         }
 
-        public void DecodeFrom(Communicator sender = null) // null = dekóduj od všech
+        public void DecypherFrom(Communicator sender = null) // null = dekóduj od všech
         {
             IEnumerable<Zprava> dosleZpravyFromSender;
 
@@ -155,8 +155,8 @@ namespace Communicators
             A.Send("Nekončící", B);
             B.Send("Sám sobě", B);
             B.Send("Nespi", A);
-            B.DecodeFrom(A);
-            A.DecodeFrom();
+            B.DecypherFrom(A);
+            A.DecypherFrom();
             Console.ReadLine();
         }
     }
